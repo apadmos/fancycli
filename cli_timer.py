@@ -1,6 +1,6 @@
 import datetime
 
-from subs.fancy_cli import print_line
+from .print_functions import print_line
 
 
 class CLITimer:

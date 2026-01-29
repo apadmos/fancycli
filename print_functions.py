@@ -3,7 +3,6 @@ import shutil
 import sys
 from datetime import timedelta
 
-from user_input import get_user_choice
 
 # Global flag to control interactive wait on errors in CLI printing
 # Set to False by default to avoid NameError and unintended prompts
