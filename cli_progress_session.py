@@ -2,7 +2,7 @@ import datetime
 import sys
 
 from .env import FANCY_VERBOSE
-from print_functions import format_timedelta, print_celebration
+from .print_functions import format_timedelta, print_celebration
 
 
 class CLIProgressSession:
