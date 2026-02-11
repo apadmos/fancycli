@@ -3,7 +3,6 @@ import shutil
 import sys
 from datetime import timedelta
 
-
 # Global flag to control interactive wait on errors in CLI printing
 # Set to False by default to avoid NameError and unintended prompts
 WAIT_ON_ERRORS = False
@@ -53,6 +52,9 @@ def format_timedelta(td: timedelta) -> str:
         hours = int(total_h)
         minutes = int(total_m % 60)
         return f"{hours}h:{minutes}m"
+
+
+FACE_EMOJIS = []
 
 
 def print_celebration(message: str = None):
