@@ -10,6 +10,6 @@ def progress_session(total_count: int = None):
     return CLIProgressSession(total_count=total_count)
 
 from .print_functions import print_line, print_error, print_success
-
+from .user_input import get_user_choice, get_user_string, get_user_confirmation
 
 
