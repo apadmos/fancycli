@@ -1,7 +1,10 @@
+import json
 import random
 import shutil
 import sys
 from datetime import timedelta
+
+from fancycli.user_input import get_user_choice
 
 # Global flag to control interactive wait on errors in CLI printing
 # Set to False by default to avoid NameError and unintended prompts
@@ -112,3 +115,8 @@ def print_success(message):
     emojis_start = "".join(random.sample(emojis, k=4))
     emojis_end = "".join(random.sample(emojis, k=4))
     print(f"{Colors.GREEN}{emojis_start}  {message}  {emojis_end}{Colors.RESET}")
+
+
+def print_pretty_json(obj):
+    j = json.dumps(obj, indent=2, sort_keys=True, default=str)
+    print_line(j)

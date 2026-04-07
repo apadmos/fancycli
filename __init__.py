@@ -9,7 +9,7 @@ def timer(message: str):
 def progress_session(total_count: int = None):
     return CLIProgressSession(total_count=total_count)
 
-from .print_functions import print_line, print_error, print_success
+from .print_functions import print_line, print_error, print_success, print_pretty_json, print_headline, print_celebration
 from .user_input import get_user_choice, get_user_string, get_user_confirmation
 
 
