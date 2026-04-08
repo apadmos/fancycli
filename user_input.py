@@ -1,4 +1,4 @@
-def get_user_choice(options):
+def get_user_choice(options) -> str:
     for idx, option in enumerate(options, start=1):
         print(f"{idx}. {option}")
 
@@ -27,7 +27,7 @@ def get_user_string(prompt: str, default: str = None) -> str:
             print("Invalid input")
 
 
-def get_user_confirmation(question:str, full_word:bool=True) -> bool:
+def get_user_confirmation(question: str, full_word: bool = True) -> bool:
     while True:
         try:
             answer = str(input(question)).lower().strip()
