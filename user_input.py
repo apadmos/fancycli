@@ -1,4 +1,4 @@
-def get_user_choice(options) -> str:
+def get_user_choice(options, mode="text") -> str | int:
     for idx, option in enumerate(options, start=1):
         print(f"{idx}. {option}")
 
@@ -6,7 +6,9 @@ def get_user_choice(options) -> str:
         try:
             choice = int(input("Enter the number of your choice: "))
             if 1 <= choice <= len(options):
-                return options[choice - 1]
+                if mode == "text":
+                    return options[choice - 1]
+                return choice
             else:
                 print(f"Please enter a number between 1 and {len(options)}.")
         except ValueError:
