@@ -38,6 +38,8 @@ def get_user_confirmation(question: str, full_word: bool = True) -> bool:
                     return True
                 if answer == "no":
                     return False
+                else:
+                    print("Invalid input. Please enter yes or no.")
             else:
                 if answer[0] == "y":
                     return True
