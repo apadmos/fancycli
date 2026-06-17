@@ -1,6 +1,6 @@
 import datetime
 
-from .print_functions import print_line, print_success, format_timedelta
+from .print_functions import print_line, format_timedelta
 
 
 class CLITimer:
@@ -14,7 +14,6 @@ class CLITimer:
         """Start the timer"""
         self.start_time = datetime.datetime.now()
         self.end_time = None
-        print_line(f"{self.message} started at {self.start_time.strftime('%H:%M:%S.%f')[:-3]}")
 
     def stop(self):
         """Stop the timer and calculate elapsed time"""
@@ -25,7 +24,8 @@ class CLITimer:
         self.end_time = datetime.datetime.now()
         elapsed_time = self.end_time - self.start_time
 
-        print_success(f"{self.message} time {format_timedelta(elapsed_time)}")
+        print_line(
+            f"⏲ {self.message} took {format_timedelta(elapsed_time)} started at {self.start_time.strftime('%H:%M:%S.%f')[:-3]} ⏰")
         return elapsed_time
 
     def __enter__(self):
