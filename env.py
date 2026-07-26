@@ -6,7 +6,7 @@ WAIT_ON_ERRORS = False
 
 def guess_env_preferences():
     envstr = str(os.environ).upper()
-    if "PYCHARM" in envstr:
+    if "/PYCHARM/" in envstr or '/WEBSTORM/' in envstr:
         global WAIT_ON_ERRORS
         WAIT_ON_ERRORS = True
         global FANCY_VERBOSE
