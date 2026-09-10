@@ -60,7 +60,7 @@ def format_timedelta(td: timedelta) -> str:
 FACE_EMOJIS = []
 
 
-def print_celebration(message: str = None):
+def print_celebration(message: str | None = None):
     emojis = [
         "🎉", "✨", "🥳", "🎊", "💯", "🚀", "🌟", "🎶", "🎈", "🔥",
         "🙌", "🍾", "😁", "👏", "🌈", "💎", "🎂", "🍀", "🌍", "💃",

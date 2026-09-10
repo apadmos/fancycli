@@ -15,7 +15,7 @@ def get_user_choice(options, mode="text") -> str | int:
             print("Invalid input. Please enter a number.")
 
 
-def get_user_string(prompt: str, default: str = None) -> str:
+def get_user_string(prompt: str, default: str | None = None) -> str:
     while True:
         try:
             if default:
