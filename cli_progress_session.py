@@ -9,7 +9,7 @@ class CLIProgressSession:
     def __init__(self, total_count=None,
                  length: int = 20,
                  throb_length: int = 20):
-        self.started: datetime.datetime = None
+        self.started: datetime.datetime | None = None
         self.completed_count: int = -1
         self.elapsed = None
         self.total_count = total_count
