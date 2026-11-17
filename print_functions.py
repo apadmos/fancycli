@@ -1,7 +1,9 @@
 import json
+import os
 import random
 import shutil
 import sys
+import traceback
 from datetime import timedelta
 
 from fancycli.user_input import get_user_choice
@@ -11,12 +13,40 @@ from fancycli.user_input import get_user_choice
 WAIT_ON_ERRORS = False
 
 
+def _stdout_is_journal() -> bool:
+    """True when stdout goes straight into the systemd journal (e.g. running as a systemd service).
+
+    systemd sets JOURNAL_STREAM to "<device>:<inode>" of the journal stream; comparing it to stdout's
+    own device and inode avoids false positives when a child of a service has its stdout redirected elsewhere.
+    """
+    journal_stream = os.environ.get("JOURNAL_STREAM")
+    if not journal_stream:
+        return False
+    try:
+        stat = os.fstat(sys.stdout.fileno())
+    except (OSError, ValueError):  # stdout replaced by something without a file descriptor
+        return False
+    return journal_stream == f"{stat.st_dev}:{stat.st_ino}"
+
+
+TO_JOURNAL = _stdout_is_journal()
+
+# journald reads a "<N>" prefix at the start of a line as its syslog priority; 3 is "err"
+JOURNAL_ERROR_PREFIX = "<3>"
+
+
 class Colors:
     RESET = "\033[0m"
     RED = "\033[31m"
     GREEN = "\033[32m"
     CYAN = "\033[36m"
     BOLD = "\033[1m"
+
+
+if TO_JOURNAL:
+    # escape codes make journalctl show the whole line as "[N B blob data]"
+    for _name in ("RESET", "RED", "GREEN", "CYAN", "BOLD"):
+        setattr(Colors, _name, "")
 
 
 def print_line(message: str):
@@ -85,14 +115,17 @@ def print_error(message, exception=None, allow_wait: bool = True):
                                      "⚠️",
                                      "🔥",
                                      "🤯"], k=3))
-    print()  # flush out any fancy shit going on in the console
-    print(f"{Colors.RED}{emojis}  {message}  {emojis}{Colors.RESET}")
-    stack_str = None
-    if exception:
-        # You can format this however your CLI class handles output
-        import traceback
-        stack_str = traceback.format_exc()
-        print(stack_str)
+    stack_str = "".join(traceback.format_exception(exception)) if exception else None
+
+    if TO_JOURNAL:
+        # one journal entry per line, each tagged as an error so `journalctl -p err` finds it
+        lines = [f"{emojis}  {message}  {emojis}"] + (stack_str.rstrip("\n").splitlines() if stack_str else [])
+        print("\n".join(JOURNAL_ERROR_PREFIX + line for line in lines))
+    else:
+        print()  # flush out any fancy shit going on in the console
+        print(f"{Colors.RED}{emojis}  {message}  {emojis}{Colors.RESET}")
+        if stack_str:
+            print(stack_str)
 
     # If wait_on_errors is enabled, prompt user for action
     if WAIT_ON_ERRORS and allow_wait:
